@@ -1,0 +1,25 @@
+# Clone and change branch to "schr":
+cd /scr/$USER
+git clone git@github.com:afonari/matminer.git
+cd matminer
+git checkout schr
+
+# Ensure that the current branch is schr
+git branch -v
+
+# Create a fake NB or OB release (or have a write-enabled release path)
+# Check that you have $SCHRODINGER set to a real release
+ls $SCHRODINGER
+cd /scr/$USER/fake_release
+
+# Create a fake release
+cp -asv $SCHRODINGER ./
+
+# Set SCHRODINGER to the fake release
+export SCHRODINGER=/scr/$USER/fake_release
+
+# Install matminer in fake release:
+$SCHRODINGER/run python3 -m pip install -e /scr/$USER/matminer
+
+# Test with
+$SCHRODINGER/run ./matminer_descriptors.py mp-2.cif
