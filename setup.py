@@ -9,8 +9,11 @@ module_dir = os.path.dirname(os.path.abspath(__file__))
 # Requirements
 reqs_file = os.path.join(module_dir, "requirements.txt")
 with open(reqs_file, "r") as f:
-    reqs_raw = f.read()
-reqs_list = [r.replace("==", ">=") for r in reqs_raw.split("\n")]
+    reqs_raw = f.readlines()
+
+# Allow comments
+reqs_list = [r.replace("==", ">=") for r in reqs_raw
+             if r.strip() and not r.strip().startswith('#')]
 
 # Optional requirements
 extras_file = os.path.join(module_dir, "requirements-optional.txt")
@@ -26,6 +29,9 @@ for req in extras_raw:
 extras_list = list(extras_dict)
 extras_list = [r for d in extras_dict.values() for r in d]
 
+# Remove optional reqs
+extras_list = []
+extras_dict = {}
 
 
 if __name__ == "__main__":
